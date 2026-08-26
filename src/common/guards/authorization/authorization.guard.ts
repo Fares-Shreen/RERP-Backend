@@ -2,7 +2,7 @@ import { BadGatewayException, CanActivate, ExecutionContext, ForbiddenException,
 import { Reflector } from '@nestjs/core';
 import { ACCESS_ROLES_KEY } from 'src/common/decorators/auth/auth.decorator';
 
-Injectable()
+@Injectable()
 export class AuthorizationGuard implements CanActivate {
   constructor(private reflector: Reflector) { }
 

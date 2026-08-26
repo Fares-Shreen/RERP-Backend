@@ -1,6 +1,6 @@
 import { hashSync, compareSync } from "bcrypt";
 
-export const hash = ({
+export const Hash_Function = ({
     plainText,
     saltRounds
 }: { plainText: string, saltRounds?: number }) => {
@@ -8,6 +8,6 @@ export const hash = ({
     return hashSync(plainText, salt);
 };
 
-export const compare = ({ plainText, cipherText }: { plainText: string, cipherText: string }) => {
+export const Compare_Function = ({ plainText, cipherText }: { plainText: string, cipherText: string }) => {
     return compareSync(plainText, cipherText);
 };

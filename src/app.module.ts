@@ -6,6 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { EmployeeController } from './module/employee/employee.controller';
+import { EmployeeService } from './module/employee/employee.service';
+import { EmployeeModule } from './module/employee/employee.module';
 
 @Module({
   imports: [
@@ -36,6 +39,7 @@ import { APP_GUARD } from '@nestjs/core';
         },
       ],
     }),
+    EmployeeModule
   ],
   controllers: [AppController],
   providers: [
