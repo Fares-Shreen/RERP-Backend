@@ -20,9 +20,9 @@ export class EmployeeController {
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeeService.create(new Types.ObjectId("6a8e4a8e3dcfa0bd4abb00f5"), createEmployeeDto);
   }
-  // @tokenTypeDecorator(tokenEnum.accessToken)
-  // @Roles([employee_role_Enum.admin])
-  // @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @tokenTypeDecorator(tokenEnum.accessToken)
+  // @Roles([employee_role_Enum.manager])
+  @UseGuards(AuthenticationGuard)
 
   @Get("/all")
   findAll(@Query() query: EmployeeFilterDto) {
@@ -49,4 +49,6 @@ export class EmployeeController {
   remove(@Param('employeeId') employeeId: string) {
     return this.employeeService.remove(employeeId);
   }
+  
+
 }

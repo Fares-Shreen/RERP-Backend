@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 import { Inject, Injectable } from "@nestjs/common";
 
 @Injectable()
-class redisService {
+export class redisService {
     constructor(@Inject("REDIS_CLIENT") private readonly redisClient: RedisClientType) {
 
     }

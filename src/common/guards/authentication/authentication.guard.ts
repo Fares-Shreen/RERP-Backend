@@ -18,6 +18,7 @@ export class AuthenticationGuard implements CanActivate {
       if (context.getType() === 'http') {
         req = context.switchToHttp().getRequest();
         authHeader = await req.headers.authorization;
+        console.log("authHeader", authHeader);
       } else if (context.getType() === 'ws') {
         req = await context.switchToWs().getClient();
         authHeader = req.handshake.headers.authorization;

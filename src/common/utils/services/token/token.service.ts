@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from "@nestjs/jwt";
 import { JwtPayload } from "jsonwebtoken";
+import redisService from 'src/common/cache/redis.service';
 import { EmployeeRepository } from 'src/DB/repositories/employee.repository';
 // import { UserRepository } from 'src/DB/repositories/user.repository'; // You will import this later!
 
@@ -8,7 +9,8 @@ import { EmployeeRepository } from 'src/DB/repositories/employee.repository';
 export class TokenService {
     constructor(
         private jwtService: JwtService,
-        private employeeRepository: EmployeeRepository
+        private employeeRepository: EmployeeRepository,
+        private _redisService: redisService,
         // private userRepository: UserRepository <-- You will inject this later for customers
     ) { }
 
@@ -59,11 +61,18 @@ export class TokenService {
         if (!userDoc) {
             throw new UnauthorizedException("Account not found");
         }
+        const isRevoked = await this._redisService.getRedis(
+            this._redisService.revokedKey({ userId: userDoc._id.toString(), jti: decoded.jti as string })
+        );
+
+        if (isRevoked) {
+            throw new UnauthorizedException("Session has been terminated. Please login again.");
+        }
 
         // Security Check: Token IAT vs Password Change Date
-        // if (userDoc.changeCredentials?.getTime() > (decoded.iat as number) * 1000) {
-        //     throw new UnauthorizedException("Password changed recently. Please login again.");
-        // }
+        if (userDoc.changeCredentialAt?.getTime() > (decoded.iat as number) * 1000) {
+            throw new UnauthorizedException("Password changed recently. Please login again.");
+        }
 
         return { user: userDoc, decoded, userType };
     }

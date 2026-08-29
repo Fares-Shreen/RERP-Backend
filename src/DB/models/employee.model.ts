@@ -30,7 +30,6 @@ export class Employee {
 
     @Prop({
         required: true,
-        select: false
     })
     password: string;
 
@@ -54,6 +53,10 @@ export class Employee {
     isDeleted: boolean;
     @Prop({ type: Types.ObjectId, ref: Employee.name, required: false })
     createdBy?: Types.ObjectId; // Optional for now, until we lock down Auth
+
+    @Prop({ type: Date, default: null })
+    changeCredentialAt?: Date;
+
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee)
@@ -65,4 +68,4 @@ EmployeeSchema.pre(["find", "findOne", "findOneAndUpdate"], function () {
 
 
 export type hydartedEmployeeDoc = HydratedDocument<Employee>
-export const EmplyeeModel = MongooseModule.forFeature([{name:Employee.name,schema:EmployeeSchema}])
+export const EmployeeModel = MongooseModule.forFeature([{name:Employee.name,schema:EmployeeSchema}])

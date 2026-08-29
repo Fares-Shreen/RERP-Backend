@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { EmployeeController } from './module/employee/employee.controller';
 import { EmployeeService } from './module/employee/employee.service';
 import { EmployeeModule } from './module/employee/employee.module';
+import { AuthModule } from './module/auth/auth.module';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { EmployeeModule } from './module/employee/employee.module';
         },
       ],
     }),
-    EmployeeModule
+    EmployeeModule,AuthModule
   ],
   controllers: [AppController],
   providers: [
