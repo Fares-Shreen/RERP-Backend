@@ -78,30 +78,44 @@ export class AuthService {
         if (!isPasswordMatch) {
             throw new BadRequestException('Invalid email or password.');
         }
-        const OTP = generateOTP()
-        eventEmitter.emit(email_event_name, async () => {
-            await sendEmail({
-                to: email,
-                subject: 'Your OTP Code',
-                html: emailTemplate(employee.name, OTP.toString()),
-            });
+        // const OTP = generateOTP()
+        // eventEmitter.emit(email_event_name, async () => {
+        //     await sendEmail({
+        //         to: email,
+        //         subject: 'Your OTP Code',
+        //         html: emailTemplate(employee.name, OTP.toString()),
+        //     });
+        // });
+
+        // const hashedOTP = Hash_Function({ plainText: OTP.toString() });
+
+        // await this._redisService.setRedis({
+        //     key: this._redisService.otpKey({ email, subject: emailEnum.loginOTP }),
+        //     value: hashedOTP,
+        //     ttl: 300, // 5 minutes
+        // })
+        // await this._redisService.setRedis({
+        //     key: this._redisService.max_otp_key({ email, subject: emailEnum.loginOTP }),
+        //     value: 1,
+        //     ttl: 300,
+        // })
+        const accessTokenId = randomUUID();
+        const refreshTokenId = randomUUID();
+        const accessToken = await this._tokenService.GenerateToken({
+            payload: { id: employee._id, role: employee.role, email: employee.email, jti: accessTokenId },
+            options: { expiresIn: '1D', secret: process.env.ACCESS_TOKEN_ACCESS_EMPLOYEE },
         });
-
-        const hashedOTP = Hash_Function({ plainText: OTP.toString() });
-
-        await this._redisService.setRedis({
-            key: this._redisService.otpKey({ email, subject: emailEnum.loginOTP }),
-            value: hashedOTP,
-            ttl: 300, // 5 minutes
-        })
-        await this._redisService.setRedis({
-            key: this._redisService.max_otp_key({ email, subject: emailEnum.loginOTP }),
-            value: 1,
-            ttl: 300,
-        })
+        const refreshToken = await this._tokenService.GenerateToken({
+            payload: { id: employee._id, role: employee.role, email: employee.email, jti: refreshTokenId },
+            options: { expiresIn: '7D', secret: process.env.REFRESH_TOKEN_ACCESS_EMPLOYEE },
+        });
+        await this._redisService.deleteRedis(
+            this._redisService.otpKey({ email, subject: emailEnum.loginOTP })
+        );
         return {
-            message: 'OTP sent successfully'
-        }
+            accessToken,
+            refreshToken
+        };
     }
 
     async employeeVerifyLoginOTP(email: string, otp: string) {

@@ -12,6 +12,7 @@ import { Reflector } from '@nestjs/core';
 @Module({
   imports: [EmployeeModel, RedisModule ],
   controllers: [AuthController],
-  providers: [AuthService,EmployeeRepository,TokenService,redisService,JwtService],
+  providers: [AuthService,EmployeeRepository,TokenService,redisService,JwtService, Reflector],
+  exports: [TokenService, JwtService, redisService, Reflector]
 })
 export class AuthModule {}

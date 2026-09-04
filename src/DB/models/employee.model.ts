@@ -52,7 +52,7 @@ export class Employee {
     @Prop({ default: false })
     isDeleted: boolean;
     @Prop({ type: Types.ObjectId, ref: Employee.name, required: false })
-    createdBy?: Types.ObjectId; // Optional for now, until we lock down Auth
+    createdBy?: Types.ObjectId; 
 
     @Prop({ type: Date, default: null })
     changeCredentialAt?: Date;
@@ -62,7 +62,9 @@ export class Employee {
 export const EmployeeSchema = SchemaFactory.createForClass(Employee)
 
 EmployeeSchema.pre(["find", "findOne", "findOneAndUpdate"], function () {
-    this.where({ isDeleted: false, deleteAt: null })
+    if (!this.getOptions().ignoreSoftDelete) {
+        this.where({ isDeleted: false, deleteAt: null });
+    }
 });
 
 

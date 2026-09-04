@@ -6,10 +6,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { EmployeeController } from './module/employee/employee.controller';
-import { EmployeeService } from './module/employee/employee.service';
 import { EmployeeModule } from './module/employee/employee.module';
 import { AuthModule } from './module/auth/auth.module';
+import { CategoryModule } from './module/category/category.module';
+import { RawMaterialsModule } from './module/raw-materials/raw-materials.module';
+import { SupplierModule } from './module/supplier/supplier.module';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { AuthModule } from './module/auth/auth.module';
         },
       ],
     }),
-    EmployeeModule,AuthModule
+    EmployeeModule, AuthModule,CategoryModule,RawMaterialsModule,SupplierModule
   ],
   controllers: [AppController],
   providers: [

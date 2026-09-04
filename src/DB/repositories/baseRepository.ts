@@ -93,8 +93,25 @@ abstract class baseRepository<TDocument> {
     async softDelete(filter: QueryFilter<TDocument>): Promise<HydratedDocument<TDocument> | null> {
         return await this.model.findOneAndUpdate(
             filter,
-            { isDeleted: true } as UpdateQuery<TDocument>,
+            {
+                isDeleted: true,
+                deleteAt: new Date()
+            } as UpdateQuery<TDocument>,
             { returnDocument: 'after' }
+        );
+    }
+
+    async restore(filter: QueryFilter<TDocument>): Promise<HydratedDocument<TDocument> | null> {
+        return await this.model.findOneAndUpdate(
+            filter,
+            {
+                isDeleted: false,
+                deleteAt: null
+            } as UpdateQuery<TDocument>,
+            {
+                returnDocument: 'after',
+                ignoreSoftDelete: true 
+            }
         );
     }
 

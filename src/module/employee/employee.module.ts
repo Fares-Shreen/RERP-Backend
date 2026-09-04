@@ -6,10 +6,11 @@ import EmployeeRepository from 'src/DB/repositories/employee.repository';
 import { TokenService } from 'src/common/utils/services/token/token.service';
 import redisService from 'src/common/cache/redis.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports:[EmployeeModel],
+  imports:[EmployeeModel,AuthModule],
   controllers: [EmployeeController],
-  providers: [EmployeeService,EmployeeRepository,TokenService,redisService,JwtService],
+  providers: [EmployeeService,EmployeeRepository],
 })
 export class EmployeeModule {}

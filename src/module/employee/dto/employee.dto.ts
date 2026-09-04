@@ -7,7 +7,8 @@ import {
     IsOptional,
     IsNumber,
     IsPositive,
-    Min
+    Min,
+    Matches
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { employee_role_Enum } from 'src/common/enums/employee.enum';
@@ -30,10 +31,12 @@ export class CreateEmployeeDto {
     @MinLength(8)
     password: string;
 
-    @ApiProperty({ example: '+01234567890', description: 'Contact phone number' })
     @IsString()
     @IsNotEmpty()
-    phone: string;
+    @Matches(/^(?:\+20|0)1[0125]\d{8}$/, {
+        message: 'Phone number must be a valid Egyptian mobile number (e.g., 01012345678 or +20123456789)'
+    })
+    phoneNumber: string;
 
     @ApiProperty({ enum: employee_role_Enum, example: employee_role_Enum.waiter, description: 'Role of the employee in the restaurant' })
     @IsEnum(employee_role_Enum)
