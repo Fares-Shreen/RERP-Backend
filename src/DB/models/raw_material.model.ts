@@ -39,9 +39,6 @@ export class RawMaterial {
     @Prop({ type: Types.ObjectId, ref: Category.name, required: false })
     categoryId: Types.ObjectId
 
-    @Prop({ type: Types.ObjectId, ref: Supplier.name, required: false })
-    supplierId: Types.ObjectId;
-
     @Prop({ type: Types.ObjectId, ref: Employee.name, required: true })
     createdBy: Types.ObjectId;
 

@@ -10,7 +10,8 @@ import {
     Min,
     Matches
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/mapped-types';
 import { employee_role_Enum } from 'src/common/enums/employee.enum';
 import { Type } from "class-transformer";
 

@@ -11,6 +11,8 @@ import { AuthModule } from './module/auth/auth.module';
 import { CategoryModule } from './module/category/category.module';
 import { RawMaterialsModule } from './module/raw-materials/raw-materials.module';
 import { SupplierModule } from './module/supplier/supplier.module';
+import { RecipeModule } from './module/recipe/recipe.module';
+import { InventoryModule } from './module/inventory/inventory.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { SupplierModule } from './module/supplier/supplier.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DBURL'),
+        uri: configService.get<string>("DBURL"),
         onConnectionCreate: (connection: Connection) => {
           connection.on('connected', () => console.log('connected'));
           connection.on('open', () => console.log('open'));
@@ -41,7 +43,7 @@ import { SupplierModule } from './module/supplier/supplier.module';
         },
       ],
     }),
-    EmployeeModule, AuthModule,CategoryModule,RawMaterialsModule,SupplierModule
+    EmployeeModule, AuthModule, CategoryModule, RawMaterialsModule, SupplierModule, RecipeModule, InventoryModule
   ],
   controllers: [AppController],
   providers: [

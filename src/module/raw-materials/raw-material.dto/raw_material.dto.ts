@@ -41,9 +41,6 @@ export class CreateRawMaterialDto {
     @IsOptional()
     categoryId?: string;
 
-    @IsMongoId({ message: 'Invalid Supplier ID format' })
-    @IsOptional()
-    supplierId?: string;
 }
 export class UpdateRawMaterialDto extends PartialType(CreateRawMaterialDto) { }
 

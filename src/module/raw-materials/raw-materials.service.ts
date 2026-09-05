@@ -42,21 +42,9 @@ export class RawMaterialsService {
       }
     }
 
-    const supplierId = dto.supplierId ? new Types.ObjectId(dto.supplierId) : undefined;
-    if (supplierId) {
-      const supplierExists = await this.supplierRepository.exists({
-        filter: { _id: supplierId },
-      });
-
-      if (!supplierExists) {
-        throw new NotFoundException('Supplier not found');
-      }
-    }
-
     const rawMaterial = await this.rawMaterialRepository.create({
       ...dto,
       categoryId: categoryId,
-      supplierId: supplierId,
       createdBy: new Types.ObjectId(employeeId),
     });
 
